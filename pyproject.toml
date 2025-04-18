@@ -1,0 +1,19 @@
+[project]
+name = "yolov8-person-detector"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "hdh", email = "dhd6682@4ind.co.kr"},
+]
+dependencies = ["ultralytics>=8.3.111", "opencv-python>=4.11.0.86"]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
