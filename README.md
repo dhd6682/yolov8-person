@@ -1,10 +1,12 @@
 # yolov8-person-detector
 
-### best.pt입니다
-https://drive.google.com/file/d/1fRg-kenqBJ-eTYwzQHgPaYyp_YpXf4ws/view?usp=drive_link
+이미지 빌드 후
+docker build -t yolov8-person-detector .
 
-### 실행방법
-터미널에서 docker run --rm   --device=/dev/video0   -e DISPLAY=$DISPLAY   -v /tmp/.X11-unix:/tmp/.X11-unix   yolov8-person-detector실행
-
+실행
+docker run --rm \
+  -v $(pwd)/test_images:/app/test_images \
+  -v $(pwd)/results:/app/results \
+  yolov8-person-detector
 
 
