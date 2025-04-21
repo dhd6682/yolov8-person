@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     apt-get clean
 
 # 의존성 파일만 먼저 복사
-COPY pyproject.toml pdm.lock ./
+COPY pyproject.toml pdm.lock README.md ./
 
 # 의존성 설치 (캐시 사용됨)
 RUN pdm install
