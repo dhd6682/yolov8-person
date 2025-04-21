@@ -4,7 +4,8 @@ import sys
 import cv2
 
 MODEL_PATH = "best.pt"
-CONFIDENCE_THRESHOLD = 0.6  # 👈 여기서 조정
+CONFIDENCE_THRESHOLD = 0.8  # conf_thresh
+NMS_THRESHOLD = 0.2         # iou_thresh = NMS threshold
 
 # 모델 파일 확인
 if not os.path.exists(MODEL_PATH):
@@ -22,13 +23,13 @@ while True:
     if not ret:
         break
 
-    # 추론 실행
-    results = model(frame)[0]
+    # 추론 실행 (conf, iou 지정)
+    results = model.predict(source=frame, conf=CONFIDENCE_THRESHOLD, iou=NMS_THRESHOLD, verbose=False)[0]
 
-    # 마스크나 박스 그리기 전에 confidence로 필터링
+    # 사람 클래스만 필터링
     filtered_boxes = []
     for box in results.boxes:
-        if box.conf >= CONFIDENCE_THRESHOLD and int(box.cls[0]) == 0:  # class 0 = person
+        if int(box.cls[0]) == 0:  # class 0 = person
             filtered_boxes.append(box)
 
     # 박스 그리기
