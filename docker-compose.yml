@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: yolov8-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: yolov8db
+      MYSQL_USER: yolouser
+      MYSQL_PASSWORD: yolopass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+  yolov8-app:
+    build: .
+    runtime: nvidia
+    container_name: yolov8-app
+    depends_on:
+      - mariadb
+    environment:
+      DB_HOST: mariadb
+      DB_USER: yolouser
+      DB_PASSWORD: yolopass
+      DB_NAME: yolov8db
+      NVIDIA_VISIBLE_DEVICES: all
+    volumes:
+      - ./test_images:/app/test_images
+      - ./results:/app/results
+    command: pdm run python main.py
+
+  adminer:                    
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  mariadb-data:
